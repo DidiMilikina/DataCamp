@@ -1,0 +1,42 @@
+'''
+Linear regressions
+Perform a linear regression for both the 1975 and 2012 data. Then, perform pairs bootstrap estimates for the regression parameters. Report 95% confidence intervals on the slope and intercept of the regression line.
+
+You will use the draw_bs_pairs_linreg() function you wrote back in chapter 2.
+
+As a reminder, its call signature is draw_bs_pairs_linreg(x, y, size=1), and it returns bs_slope_reps and bs_intercept_reps. The beak length data are stored as bl_1975 and bl_2012, and the beak depth data is stored in bd_1975 and bd_2012.
+
+Instructions
+100 XP
+Compute the slope and intercept for both the 1975 and 2012 data sets.
+Obtain 1000 pairs bootstrap samples for the linear regressions using your draw_bs_pairs_linreg() function.
+Compute 95% confidence intervals for the slopes and the intercepts.
+'''
+SOLUTION
+# Compute the linear regressions
+slope_1975, intercept_1975 = np.polyfit(bl_1975, bd_1975, 1)
+slope_2012, intercept_2012 = np.polyfit(bl_2012, bd_2012, 1)
+
+# Perform pairs bootstrap for the linear regressions
+bs_slope_reps_1975, bs_intercept_reps_1975 = \
+        draw_bs_pairs_linreg(bl_1975, bd_1975, 1000)
+bs_slope_reps_2012, bs_intercept_reps_2012 = \
+        draw_bs_pairs_linreg(bl_2012, bd_2012, 1000)
+
+# Compute confidence intervals of slopes
+slope_conf_int_1975 = np.percentile(bs_slope_reps_1975, [2.5, 97.5])
+slope_conf_int_2012 = np.percentile(bs_slope_reps_2012, [2.5, 97.5])
+intercept_conf_int_1975 = np.percentile(bs_intercept_reps_1975, [2.5, 97.5])
+
+intercept_conf_int_2012 = np.percentile(bs_intercept_reps_2012, [2.5, 97.5])
+
+
+# Print the results
+print('1975: slope =', slope_1975,
+      'conf int =', slope_conf_int_1975)
+print('1975: intercept =', intercept_1975,
+      'conf int =', intercept_conf_int_1975)
+print('2012: slope =', slope_2012,
+      'conf int =', slope_conf_int_2012)
+print('2012: intercept =', intercept_2012,
+      'conf int =', intercept_conf_int_2012)
